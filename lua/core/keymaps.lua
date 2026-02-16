@@ -109,4 +109,12 @@ function WrapWord()
 	vim.api.nvim_put({ open .. vim.fn.getreg('"') .. close }, "c", true, true)
 end
 
-vim.api.nvim_set_keymap("n", "<leader>cw", ":lua WrapWord()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap(
+	"n",
+	"<leader>cw",
+	":lua WrapWord()<CR>",
+	{ noremap = true, silent = true, desc = "Wrap word with char" }
+)
+
+-- Quit Terminal mode and switch to Normal mode
+vim.api.nvim_set_keymap("t", "<Esc>", "<C-\\><C-n>", { noremap = true, silent = true })
