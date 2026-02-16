@@ -1,28 +1,37 @@
 return {
-  'shaunsingh/nord.nvim',
-  lazy = false,
-  priority = 1000,
-  config = function()
-    -- Example config in lua
-    vim.g.nord_contrast = true
-    vim.g.nord_borders = false
-    vim.g.nord_disable_background = true
-    vim.g.nord_italic = false
-    vim.g.nord_uniform_diff_background = true
-    vim.g.nord_bold = false
+	"folke/tokyonight.nvim",
+	lazy = false,
+	priority = 1000,
+	config = function()
+		local bg_transparent = true
 
-    -- Load the colorscheme
-    require('nord').set()
+		local function apply_theme()
+			require("tokyonight").setup({
+				style = "storm", -- storm | moon | night | day
+				transparent = bg_transparent,
+				terminal_colors = true,
+				styles = {
+					comments = { italic = true },
+					keywords = { italic = false },
+					functions = {},
+					variables = {},
+					sidebars = "transparent", -- sidebars like Neo-tree
+					floats = "transparent", -- floating windows
+					dim_inactive = false,
+				},
+				cache = true,
+			})
+			vim.cmd("colorscheme tokyonight")
+		end
 
-    -- Toggle background transparency
-    local bg_transparent = true
+		apply_theme()
 
-    local toggle_transparency = function()
-      bg_transparent = not bg_transparent
-      vim.g.nord_disable_background = bg_transparent
-      vim.cmd [[colorscheme nord]]
-    end
+		-- Toggle background transparency
+		local toggle_transparency = function()
+			bg_transparent = not bg_transparent
+			apply_theme()
+		end
 
-    vim.keymap.set('n', '<leader>bg', toggle_transparency, { noremap = true, silent = true })
-  end,
+		vim.keymap.set("n", "<leader>bg", toggle_transparency, { noremap = true, silent = true })
+	end,
 }
