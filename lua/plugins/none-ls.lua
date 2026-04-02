@@ -18,6 +18,7 @@ return {
 				"checkmake", -- linter for Makefiles
 				-- 'stylua', -- lua formatter; Already installed via Mason
 				-- 'ruff', -- Python linter and formatter; Already installed via Mason
+				-- 'rustfmt' -- Installed via rustup
 				"clang_format",
 			},
 			automatic_installation = true,
@@ -34,6 +35,7 @@ return {
 			}),
 			require("none-ls.formatting.ruff").with({ extra_args = { "--extend-select", "I" } }),
 			require("none-ls.formatting.ruff_format"),
+			require("none-ls.formatting.rustfmt"),
 		}
 
 		local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
