@@ -20,6 +20,7 @@ return {
 				-- 'ruff', -- Python linter and formatter; Already installed via Mason
 				-- 'rustfmt' -- Installed via rustup
 				"clang_format",
+				"ktlint",
 			},
 			automatic_installation = true,
 		})
@@ -30,6 +31,7 @@ return {
 			formatting.stylua,
 			formatting.shfmt.with({ args = { "-i", "4" } }),
 			formatting.terraform_fmt,
+			formatting.ktlint.with({ args = { "--format" } }),
 			formatting.clang_format.with({
 				extra_args = { "--style=file" },
 			}),

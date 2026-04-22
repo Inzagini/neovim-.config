@@ -3,15 +3,9 @@ return {
 	dependencies = {
 		-- Automatically install LSPs and related tools to stdpath for Neovim
 		{ "mason-org/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
-		-- mason-lspconfig:
-		-- - Bridges the gap between LSP config names (e.g. "lua_ls") and actual Mason package names (e.g. "lua-language-server").
-		-- - Used here only to allow specifying language servers by their LSP name (like "lua_ls") in `ensure_installed`.
-		-- - It does not auto-configure servers — we use vim.lsp.config() + vim.lsp.enable() explicitly for full control.
 		"mason-org/mason-lspconfig.nvim",
 		-- mason-tool-installer:
 		-- - Installs LSPs, linters, formatters, etc. by their Mason package name.
-		-- - We use it to ensure all desired tools are present.
-		-- - The `ensure_installed` list works with mason-lspconfig to resolve LSP names like "lua_ls".
 		"WhoIsSethDaniel/mason-tool-installer.nvim",
 
 		-- Useful status updates for LSP.
@@ -33,8 +27,6 @@ return {
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 			callback = function(event)
-				-- Create a function that lets us more easily define mappings specific
-				-- for LSP related items. It sets the mode, buffer and description for us each time.
 				local map = function(keys, func, desc, mode)
 					mode = mode or "n"
 					vim.keymap.set(mode, keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
@@ -115,20 +107,11 @@ return {
 			end,
 		})
 
-		-- LSP servers and clients are able to communicate to each other what features they support.
-		-- By default, Neovim doesn't support everything that is in the LSP specification.
-		-- When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
-		-- So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
 		-- Enable the following language servers
 		--
-		-- Add any additional override configuration in the following tables. Available keys are:
-		-- - cmd (table): Override the default command used to start the server
-		-- - filetypes (table): Override the default list of associated filetypes for the server
-		-- - capabilities (table): Override fields in capabilities. Can be used to disable certain LSP features.
-		-- - settings (table): Override the default settings passed when initializing the server.
 		local servers = {
 			ts_ls = {},
 			ruff = {},
@@ -190,6 +173,7 @@ return {
 				},
 			},
 			rust_analyzer = {},
+			kotlin_lsp = {},
 		}
 
 		-- Ensure the servers and tools above are installed
